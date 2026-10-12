@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio | Miftahul Huda - Radiologi</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (sebagai pengganti Lucide React di HTML murni) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Konfigurasi Tema Dinamis Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        themeBg: 'var(--theme-bg)',
+                        themeNavBg: 'var(--theme-nav-bg)',
+                        themeCardBg: 'var(--theme-card-bg)',
+                        themeBlob: 'var(--theme-blob)',
+                        themeTextInverse: 'var(--theme-text-inverse)',
+                        navy: '#003366',
+                        cream: '#fdf5e6'
+                    },
+                    animation: {
+                        'spin-slow': 'spin 15s linear infinite',
+                        'bounce-slow': 'bounce 4s infinite',
+                        'bounce-reverse': 'bounce 5s infinite reverse',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            /* Default Theme: Airlangga Cream */
+            --theme-bg: #fdf5e6;
+            --theme-nav-bg: rgba(253, 245, 230, 0.85);
+            --theme-card-bg: rgba(255, 255, 255, 0.6);
+            --theme-blob: #e6dcc0;
+            --theme-text-inverse: #fdf5e6;
+        }
+
+        body {
+            background-color: var(--theme-bg);
+            transition: background-color 0.7s ease-in-out;
+            font-family: 'Inter', sans-serif;
+            color: #003366;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background-color: #003366;
+            color: #fdf5e6;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background-color: var(--theme-card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .glass-nav {
+            background-color: var(--theme-nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 51, 102, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 51, 102, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 51, 102, 0.5);
+        }
+
+        .hide-tab {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="antialiased relative transition-colors duration-700 ease-in-out text-navy">
+
+    <!-- Dynamic Background Gradients -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <!-- Blob 1 (Top Left) -->
+        <div id="blob1" class="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full mix-blend-multiply filter blur-[100px] opacity-20 transition-all duration-1000 ease-in-out will-change-transform" style="background-color: var(--theme-blob);"></div>
+        <!-- Blob 2 (Bottom Right) -->
+        <div id="blob2" class="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-navy rounded-full mix-blend-multiply filter blur-[120px] opacity-10 transition-transform duration-100 ease-out will-change-transform"></div>
+        <!-- Blob 3 (Center) -->
+        <div id="blob3" class="absolute top-[40%] left-[20%] w-[40vw] h-[40vw] bg-teal-300 rounded-full mix-blend-multiply filter blur-[90px] opacity-20 transition-transform duration-100 ease-out will-change-transform"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6">
+        <div class="container mx-auto px-4 flex justify-center">
+            <div id="nav-container" class="flex items-center justify-between px-6 py-3 rounded-full border border-navy/10 shadow-xl transition-all duration-500 w-[95%] md:w-[90%] bg-white/40 glass-nav">
+                
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-navy to-[#004080] flex items-center justify-center transition-colors duration-500">
+                        <i class="ph ph-scan text-cream text-lg"></i>
+                    </div>
+                    <span class="font-semibold tracking-wide text-sm md:text-base hidden sm:block">Miftahul Huda</span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium text-navy/70">
+                    <a href="#profile" class="hover:text-navy transition-colors">Profil</a>
+                    <a href="#experience" class="hover:text-navy transition-colors">Experience</a>
+                    <a href="#clinical" class="hover:text-navy transition-colors">Magang</a>
+                    <a href="#achievements" class="hover:text-navy transition-colors">Prestasi</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleTheme()" class="p-2 rounded-full bg-navy/5 hover:bg-navy/10 transition-all active:scale-95 group relative" title="Ganti Tema">
+                        <i class="ph ph-palette text-navy text-lg"></i>
+                    </button>
+
+                    <a href="#contact" class="px-4 py-2 bg-navy text-cream rounded-full text-xs font-bold hover:scale-105 transition-all duration-300 flex items-center gap-1 shadow-lg hover:shadow-xl">
+                        Connect <i class="ph ph-caret-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative z-10 pt-40 pb-20 px-4 min-h-[90vh] flex items-center justify-center">
+        <div class="container mx-auto max-w-4xl">
+            <!-- Text Content Only - Centered -->
+            <div class="flex flex-col items-center text-center space-y-6">
+                <!-- DYNAMIC GREETING BADGE -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-white/40 shadow-sm backdrop-blur-md text-xs font-extrabold tracking-wider text-navy/80 transition-all duration-500">
+                    <span class="text-xl" id="greeting-emoji">👋</span> <span id="dynamic-greeting">SELAMAT DATANG</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-navy">
+                    Hii Welcome <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-gray-500">
+                        To My Journey
+                    </span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-navy/80 max-w-2xl mx-auto leading-relaxed mb-8 font-medium">
+                    This is where I collect my journey and my passion in the field of radiology imaging.
+                </p>
+
+                <!-- Interactive Slider (Experience vs Magang) -->
+                <div class="flex flex-col items-center gap-4 mt-8">
+                    <div class="flex items-center gap-4">
+                        <span id="label-experience" class="text-sm font-bold tracking-widest uppercase transition-colors duration-300 text-navy">
+                            Experience
+                        </span>
+                        
+                        <!-- Slider Bar -->
+                        <div onclick="toggleSlider()" class="w-20 h-10 bg-navy/10 rounded-full p-1 cursor-pointer border border-navy/20 backdrop-blur-sm relative hover:scale-105 transition-transform duration-300">
+                            <div id="slider-knob" class="w-8 h-8 rounded-full shadow-lg transform transition-all duration-500 ease-out flex items-center justify-center translate-x-0 bg-navy">
+                                <i id="slider-icon" class="ph ph-users text-cream"></i>
+                            </div>
+                        </div>
+
+                        <span id="label-internship" class="text-sm font-bold tracking-widest uppercase transition-colors duration-300 text-navy/40">
+                            Magang
+                        </span>
+                    </div>
+
+                    <!-- Dynamic Target Button -->
+                    <a id="btn-dynamic" href="#experience" class="mt-4 px-8 py-4 rounded-[2rem] font-bold text-lg flex items-center gap-3 hover:scale-105 transition-all duration-500 shadow-xl bg-navy text-cream">
+                        <span id="btn-dynamic-text">Lihat Experience</span>
+                        <i class="ph ph-arrow-right text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="relative z-10 py-24 px-4">
+        <div class="container mx-auto max-w-5xl">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                
+                <!-- Profile Image Card -->
+                <div class="w-full md:w-1/3 flex justify-center">
+                    <div class="relative w-72 h-[450px] rounded-[3rem] overflow-hidden group hover:scale-[1.02] transition-transform duration-500 shadow-2xl glass-panel">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cream/20 to-cream/80 z-10"></div>
+                        
+                        <div class="absolute inset-0 bg-gray-200">
+                            <!-- --- GANTI LINK (src) DI BAWAH INI DENGAN LINK FOTO ANDA --- -->
+                            <img src="pose formal.JPG" alt="Foto Profil Miftahul Huda" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"/>
+                        </div>
+                        
+                        <div class="absolute bottom-0 left-0 w-full p-8 z-20">
+                            <div class="w-16 h-16 rounded-2xl bg-navy flex items-center justify-center mb-4 shadow-lg text-cream group-hover:-translate-y-2 transition-transform duration-500">
+                                <i class="ph-fill ph-user text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-navy leading-tight drop-shadow-md">Miftahul Huda</h3>
+                            <p class="text-navy/80 mt-1 font-medium drop-shadow-sm">Teknologi Radiologi Pencitraan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Details -->
+                <div class="flex-1 space-y-8">
+                    <div>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4 flex items-center gap-3 text-navy">
+                            <span class="w-12 h-1 bg-navy rounded-full block"></span>
+                            Profil Saya
+                        </h2>
+                        <p class="text-lg text-navy/80 leading-relaxed">
+                            Mahasiswa Teknologi Radiologi Pencitraan tahun kedua di Universitas Airlangga (Diterima via SNBP 2024). Saya memiliki rekam jejak prestasi nasional di bidang penulisan ilmiah dan perencanaan bisnis, serta aktif dalam organisasi kepemimpinan dan manajemen acara.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 rounded-3xl bg-white/40 border border-navy/10 hover:bg-white/60 transition-colors shadow-sm">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-navy/50 mb-2">Pendidikan Saat Ini</h4>
+                            <p class="text-xl font-bold text-navy">Universitas Airlangga</p>
+                            <p class="text-sm text-navy/70">D4 - Radiologi (2024-Skrg)</p>
+                        </div>
+                        <div class="p-6 rounded-3xl bg-white/40 border border-navy/10 hover:bg-white/60 transition-colors shadow-sm">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-navy/50 mb-2">Pendidikan Menengah</h4>
+                            <p class="text-xl font-bold text-navy">MAN 1 Banyuwangi</p>
+                            <p class="text-sm text-navy/70">MIPA (2021-2024)</p>
+                        </div>
+                        <div class="p-6 rounded-3xl bg-white/40 border border-navy/10 hover:bg-white/60 transition-colors shadow-sm">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-navy/50 mb-2">Sertifikasi</h4>
+                            <p class="text-xl font-bold text-navy">Basic Life Support</p>
+                            <p class="text-sm text-navy/70">BLS Competency</p>
+                        </div>
+                        <div class="p-6 rounded-3xl bg-white/40 border border-navy/10 hover:bg-white/60 transition-colors shadow-sm">
+                            <h4 class="text-sm font-bold uppercase tracking-wider text-navy/50 mb-2">Keahlian Bahasa</h4>
+                            <p class="text-xl font-bold text-navy">English & Indonesia</p>
+                            <p class="text-sm text-navy/70">Duolingo Score: 83</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Organization) -->
+    <section id="experience" class="relative z-10 py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-2 text-navy">Experience</h2>
+                    <p class="text-navy/60">Rekam jejak kepanitiaan dan organisasi di kampus.</p>
+                </div>
+
+                <!-- Tabs Filter -->
+                <div class="p-1.5 rounded-full inline-flex relative border border-navy/10 transition-colors duration-500 overflow-x-auto glass-panel">
+                    <button onclick="filterExp('all')" class="exp-tab active-tab relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap shadow-lg text-cream bg-navy">All</button>
+                    <button onclick="filterExp('leadership')" class="exp-tab relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap text-navy/60 hover:text-navy">Leadership</button>
+                    <button onclick="filterExp('organization')" class="exp-tab relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap text-navy/60 hover:text-navy">Organization</button>
+                    <button onclick="filterExp('event management')" class="exp-tab relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap text-navy/60 hover:text-navy">Event Management</button>
+                    <button onclick="filterExp('public speaking')" class="exp-tab relative z-10 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap text-navy/60 hover:text-navy">Public Speaking</button>
+                </div>
+            </div>
+
+            <!-- Experience Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="exp-grid">
+                <!-- Data will be rendered via JS to keep HTML clean -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Internship Section -->
+    <section id="clinical" class="relative z-10 py-24 px-4 bg-navy/5 backdrop-blur-sm">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col items-center mb-16 text-center">
+                <span class="px-4 py-1 rounded-full border border-navy/10 bg-white/40 text-sm mb-4 font-mono text-navy/60">
+                    FIELD EXPERIENCE
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-navy to-gray-600">
+                    Magang & PKL
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Clinical 1 -->
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-200 opacity-40 rounded-[2.5rem] blur-xl group-hover:opacity-60 transition-opacity duration-500"></div>
+                    <div class="relative h-full backdrop-blur-2xl border border-navy/10 rounded-[2.5rem] p-8 md:p-10 hover:border-navy/30 transition-all duration-300 shadow-sm flex flex-col glass-panel hover:-translate-y-1">
+                        <div class="flex flex-col xl:flex-row justify-between items-start gap-4 mb-8 border-b border-navy/10 pb-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-2xl bg-navy/5 flex items-center justify-center border border-navy/10 shrink-0 shadow-sm">
+                                    <i class="ph ph-stethoscope text-3xl text-navy"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-navy leading-tight">RS Perkebunan Jember Klinik</h3>
+                                    <p class="text-navy/60 font-medium text-sm mt-1">Institusi / Mitra</p>
+                                </div>
+                            </div>
+                            <div class="text-left xl:text-right">
+                                <span class="inline-block px-3 py-1 bg-navy/5 text-navy text-xs font-bold rounded-full border border-navy/10 mb-1">
+                                    PKL (Praktek Kerja Lapangan)
+                                </span>
+                                <p class="text-xs text-navy/60 font-semibold mt-1">2026</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6 flex-grow">
+                            <div>
+                                <h4 class="flex items-center gap-2 text-sm font-bold text-navy/80 uppercase tracking-wider mb-3">
+                                    <i class="ph ph-user"></i> Posisi & Fokus
+                                </h4>
+                                <p class="text-lg font-semibold text-navy">Radiografer Trainee</p>
+                                <p class="text-navy/80 leading-relaxed text-sm mt-2">
+                                    Fokus kompetensi pada pelaksanaan prosedur Radiografi Konvensional, teknik proteksi radiasi, serta pelayanan pasien secara langsung.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="flex items-center gap-2 text-sm font-bold text-navy/80 uppercase tracking-wider mb-3">
+                                    <i class="ph ph-file-text"></i> Laporan Kasus
+                                </h4>
+                                <p class="text-navy/90 font-medium bg-navy/5 p-3 rounded-xl border border-navy/10 text-sm">
+                                    Pemeriksaan Thorakolumbal pada kasus Skoliosis
+                                </p>
+                            </div>
+                        </div>
+                        <div class="pt-6 mt-6 border-t border-navy/5 flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-navy/5 rounded-lg text-xs font-medium text-navy/80 border border-navy/10">Radiografi Konvensional</span>
+                            <span class="px-3 py-1.5 bg-navy/5 rounded-lg text-xs font-medium text-navy/80 border border-navy/10">Patient Safety</span>
+                            <span class="px-3 py-1.5 bg-navy/5 rounded-lg text-xs font-medium text-navy/80 border border-navy/10">Positioning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clinical 2 -->
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-200 opacity-40 rounded-[2.5rem] blur-xl group-hover:opacity-60 transition-opacity duration-500"></div>
+                    <div class="relative h-full backdrop-blur-2xl border border-navy/10 rounded-[2.5rem] p-8 md:p-10 hover:border-navy/30 transition-all duration-300 shadow-sm flex flex-col glass-panel hover:-translate-y-1">
+                        <div class="flex flex-col xl:flex-row justify-between items-start gap-4 mb-8 border-b border-navy/10 pb-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-2xl bg-navy/5 flex items-center justify-center border border-navy/10 shrink-0 shadow-sm">
+                                    <i class="ph ph-buildings text-3xl text-navy"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-navy leading-tight">Direktorat Sistem Informasi (DSI)</h3>
+                                    <p class="text-navy/60 font-medium text-sm mt-1">Universitas Airlangga</p>
+                                </div>
+                            </div>
+                            <div class="text-left xl:text-right">
+                                <span class="inline-block px-3 py-1 bg-navy/5 text-navy text-xs font-bold rounded-full border border-navy/10 mb-1">
+                                    Internship
+                                </span>
+                                <p class="text-xs text-navy/60 font-semibold mt-1">Feb 2026 – Apr 2026</p>
+                            </div>
+                        </div>
+                        <div class="space-y-6 flex-grow">
+                            <div>
+                                <h4 class="flex items-center gap-2 text-sm font-bold text-navy/80 uppercase tracking-wider mb-3">
+                                    <i class="ph ph-user"></i> Posisi & Fokus
+                                </h4>
+                                <p class="text-lg font-semibold text-navy">Tim Webometrics</p>
+                                <p class="text-navy/80 leading-relaxed text-sm mt-2">
+                                    Berkontribusi dalam menganalisis dan meningkatkan performa digital universitas untuk mendukung pemeringkatan Webometrics internasional. Terlibat dalam optimasi konten digital dan manajemen data.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="pt-6 mt-6 border-t border-navy/5 flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-navy/5 rounded-lg text-xs font-medium text-navy/80 border border-navy/10">Analisis Data</span>
+                            <span class="px-3 py-1.5 bg-navy/5 rounded-lg text-xs font-medium text-navy/80 border border-navy/10">Optimasi Digital</span>
+                            <span class="px-3 py-1.5 bg-navy/5 rounded-lg text-xs font-medium text-navy/80 border border-navy/10">Webometrics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="relative z-10 py-20 px-4 mb-10">
+        <div class="container mx-auto max-w-5xl">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-2 flex items-center gap-3 text-navy">
+                        <i class="ph-fill ph-trophy text-yellow-600"></i>
+                        Penghargaan
+                    </h2>
+                    <p class="text-navy/60">Pencapaian dari tingkat Kabupaten hingga Nasional.</p>
+                </div>
+                <div class="hidden md:flex gap-2">
+                    <i class="ph-fill ph-star text-navy/10 text-2xl"></i>
+                    <i class="ph-fill ph-star text-navy/20 text-3xl"></i>
+                    <i class="ph-fill ph-star text-navy/10 text-2xl"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Achievement 1 -->
+                <div class="group relative flex items-start gap-6 p-6 md:p-8 bg-white/40 border border-navy/10 rounded-3xl hover:border-navy/30 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1">
+                    <div class="relative z-10 w-16 h-16 rounded-2xl bg-navy flex items-center justify-center flex-shrink-0 shadow-md">
+                        <i class="ph-fill ph-medal text-3xl text-yellow-400"></i>
+                    </div>
+                    <div class="relative z-10 flex-1">
+                        <span class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-1 block">Tingkat Nasional</span>
+                        <h3 class="text-lg font-bold text-navy mb-2 leading-tight">Juara 1 Lomba Artikel Ilmiah Nasional (PILAR XII)</h3>
+                        <p class="text-sm text-navy/70">Universitas Mahasaraswati Denpasar</p>
+                    </div>
+                </div>
+                
+                <!-- Achievement 2 -->
+                <div class="group relative flex items-start gap-6 p-6 md:p-8 bg-white/40 border border-navy/10 rounded-3xl hover:border-navy/30 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1">
+                    <div class="relative z-10 w-16 h-16 rounded-2xl bg-navy flex items-center justify-center flex-shrink-0 shadow-md">
+                        <i class="ph-fill ph-medal text-3xl text-gray-300"></i>
+                    </div>
+                    <div class="relative z-10 flex-1">
+                        <span class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-1 block">Tingkat Nasional</span>
+                        <h3 class="text-lg font-bold text-navy mb-2 leading-tight">Top 5 Finalist Business Plan Competition (E-PRO 2025)</h3>
+                        <p class="text-sm text-navy/70">Universitas Diponegoro</p>
+                    </div>
+                </div>
+
+                <!-- Achievement 3 -->
+                <div class="group relative flex items-start gap-6 p-6 md:p-8 bg-white/40 border border-navy/10 rounded-3xl hover:border-navy/30 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1">
+                    <div class="relative z-10 w-16 h-16 rounded-2xl bg-navy flex items-center justify-center flex-shrink-0 shadow-md">
+                        <i class="ph-fill ph-medal text-3xl text-amber-500"></i>
+                    </div>
+                    <div class="relative z-10 flex-1">
+                        <span class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-1 block">Tingkat Kabupaten</span>
+                        <h3 class="text-lg font-bold text-navy mb-2 leading-tight">Juara 3 OSN-K Bidang Biologi</h3>
+                        <p class="text-sm text-navy/70">Kabupaten Banyuwangi</p>
+                    </div>
+                </div>
+
+                <!-- Achievement 4 -->
+                <div class="group relative flex items-start gap-6 p-6 md:p-8 bg-white/40 border border-navy/10 rounded-3xl hover:border-navy/30 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1">
+                    <div class="relative z-10 w-16 h-16 rounded-2xl bg-navy/10 flex items-center justify-center flex-shrink-0 shadow-md border border-navy/20">
+                        <i class="ph-fill ph-certificate text-3xl text-navy"></i>
+                    </div>
+                    <div class="relative z-10 flex-1">
+                        <span class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-1 block">Tingkat Nasional</span>
+                        <h3 class="text-lg font-bold text-navy mb-2 leading-tight">Finalis Kejurnas Skolastik & Literasi</h3>
+                        <p class="text-sm text-navy/70">Ruangguru</p>
+                    </div>
+                </div>
+
+                <!-- Achievement 5 -->
+                <div class="group relative flex items-start gap-6 p-6 md:p-8 bg-white/40 border border-navy/10 rounded-3xl hover:border-navy/30 transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1">
+                    <div class="relative z-10 w-16 h-16 rounded-2xl bg-navy/10 flex items-center justify-center flex-shrink-0 shadow-md border border-navy/20">
+                        <i class="ph-fill ph-certificate text-3xl text-navy"></i>
+                    </div>
+                    <div class="relative z-10 flex-1">
+                        <span class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-1 block">Tingkat Kabupaten</span>
+                        <h3 class="text-lg font-bold text-navy mb-2 leading-tight">Peserta KSM Biologi</h3>
+                        <p class="text-sm text-navy/70">Kabupaten Banyuwangi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative z-10 py-20 px-4 mb-20">
+        <div class="container mx-auto max-w-5xl">
+            <div class="backdrop-blur-2xl border border-navy/10 rounded-[3rem] p-8 md:p-16 text-center overflow-hidden relative transition-colors duration-500 shadow-xl glass-panel">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-navy/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-navy">Mari Berkolaborasi</h2>
+                <p class="text-lg text-navy/70 mb-12 max-w-2xl mx-auto">
+                    Tertarik mendiskusikan peluang kerjasama atau organisasi? Hubungi saya melalui platform di bawah ini.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    <!-- LinkedIn -->
+                    <a href="https://www.linkedin.com/in/miftahul-huda-72294631b" target="_blank" class="group flex flex-col items-center justify-center gap-4 p-8 border border-navy/10 rounded-[2rem] hover:bg-[#0077b5] hover:border-transparent transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-[0_10px_30px_-10px_rgba(0,119,181,0.8)] glass-panel">
+                        <div class="p-4 bg-navy/5 rounded-full group-hover:bg-white/20 transition-colors">
+                            <i class="ph-fill ph-linkedin-logo text-3xl text-navy group-hover:text-white transition-colors"></i>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-sm opacity-60 mb-1 text-navy group-hover:text-white/90">LinkedIn</span>
+                            <span class="font-bold text-navy group-hover:text-white">Connect</span>
+                        </div>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/6285963004552" target="_blank" class="group flex flex-col items-center justify-center gap-4 p-8 border border-navy/10 rounded-[2rem] hover:bg-[#25D366] hover:border-transparent transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-[0_10px_30px_-10px_rgba(37,211,102,0.8)] glass-panel">
+                        <div class="p-4 bg-navy/5 rounded-full group-hover:bg-white/20 transition-colors">
+                            <i class="ph-fill ph-whatsapp-logo text-3xl text-navy group-hover:text-white transition-colors"></i>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-sm opacity-60 mb-1 text-navy group-hover:text-white/90">WhatsApp</span>
+                            <span class="font-bold text-navy group-hover:text-white">Chat Me</span>
+                        </div>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/mft_hudaaaa/?__pwa=1#" target="_blank" class="group flex flex-col items-center justify-center gap-4 p-8 border border-navy/10 rounded-[2rem] hover:bg-gradient-to-tr hover:from-purple-600 hover:to-pink-600 hover:border-transparent transition-all duration-300 hover:scale-105 shadow-sm glass-panel">
+                        <div class="p-4 bg-navy/5 rounded-full group-hover:bg-white/20 transition-colors">
+                            <i class="ph-fill ph-instagram-logo text-3xl text-navy group-hover:text-white transition-colors"></i>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-sm opacity-60 mb-1 text-navy group-hover:text-white/90">Instagram</span>
+                            <span class="font-bold text-navy group-hover:text-white">Follow</span>
+                        </div>
+                    </a>
+
+                    <!-- Email -->
+                    <a href="mailto:miftahulhudaozil@gmail.com" class="group flex flex-col items-center justify-center gap-4 p-8 border border-navy/10 rounded-[2rem] hover:bg-navy hover:border-transparent transition-all duration-300 hover:scale-105 shadow-sm glass-panel">
+                        <div class="p-4 bg-navy/5 rounded-full transition-colors group-hover:bg-white/10">
+                            <i class="ph-fill ph-envelope-simple text-3xl text-navy group-hover:text-cream transition-colors"></i>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-sm opacity-60 mb-1 text-navy group-hover:text-cream/80">Email</span>
+                            <span class="font-bold text-navy group-hover:text-cream">Send Mail</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-navy/40 text-sm">
+        <div class="container mx-auto px-4">
+            <p>© 2026 Miftahul Huda. Universitas Airlangga.</p>
+            <p class="mt-2 text-xs">Designed with iOS 26 Aesthetics in HTML</p>
+        </div>
+    </footer>
+
+    <script>
+        /* --- 1. DATA EXPERIENCE --- */
+        const experiences = [
+            { title: "Ketua Pelaksana (KOC RONTGEN 2025)", org: "HIMA Radiologi", period: "Feb 2025 – Nov 2025", category: "Leadership", desc: "Memimpin koordinasi strategis 8 divisi operasional untuk merancang program integrasi mahasiswa baru angkatan 2025. Bertanggung jawab atas pengembangan kurikulum karakter dan manajemen sumber daya tim.", icon: "ph-users" },
+            { title: "Wakil Ketua Pelaksana", org: "Malam Keakraban (Astragalus 2024)", period: "Desember 2024", category: "Event Management", desc: "Mengawasi eksekusi operasional dan memastikan sinkronisasi antara divisi acara dan perlengkapan untuk kelancaran kegiatan pertemuan angkatan.", icon: "ph-users" },
+            { title: "Staff Divisi PSDM", org: "HIMA Radiologi", period: "2025 & 2026", category: "Organization", desc: "Berperan aktif dalam Divisi Pengembangan Sumber Daya Mahasiswa (PSDM) selama dua periode kepengurusan.", icon: "ph-briefcase" },
+            { title: "Master of Ceremony (MC) Formal", org: "GEMA MEMBIRU & FAMGHATE", period: "Maret 2025 & Juni 2026", category: "Public Speaking", desc: "Bertugas memandu acara formal kepanitiaan HIMA Radiologi untuk memastikan seluruh agenda berjalan tepat waktu dan sesuai dengan Rundown Acara.", icon: "ph-microphone" },
+            { title: "Liaison Officer (LO)", org: "Airlangga Ideas Competition", period: "November 2025", category: "Communication", desc: "Menjadi narahubung utama bagi tim finalis nasional dan memastikan penyampaian informasi yang akurat antara panitia dan peserta.", icon: "ph-phone" },
+            { title: "Staff Divisi Fundraising", org: "UKM Penalaran", period: "2025", category: "Organization", desc: "Berperan dalam pencarian dana (Fundraising) untuk mendukung kegiatan dan operasional UKM Penalaran.", icon: "ph-briefcase" },
+            { title: "Staff Perlengkapan", org: "Workshop Sponsorship UKM Penalaran", period: "Oktober 2025", category: "Event Management", desc: "Bertanggung jawab dan membantu atas perlengkapan dalam menyediakan dan memenuhi kebutuhan acara baik sebelum dan selama kegiatan berlangsung.", icon: "ph-stack" },
+            { title: "Staff Divisi Acara", org: "Visiting Radiologi 2025", period: "November 2025", category: "Event Management", desc: "Bertanggung jawab atas konsep persiapan dan berjalannya rangkaian seluruh kegiatan acara Visiting Radiologi dari awal hingga akhir.", icon: "ph-users" }
+        ];
+
+        /* Render Experience Data */
+        const expGrid = document.getElementById('exp-grid');
+        function renderExperience() {
+            expGrid.innerHTML = '';
+            experiences.forEach((exp, i) => {
+                expGrid.innerHTML += `
+                    <div class="exp-item group p-8 bg-white/40 backdrop-blur-xl border border-navy/10 rounded-[2rem] hover:border-navy/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-1" data-category="${exp.category.toLowerCase()}">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-navy/10 flex items-center justify-center">
+                                <i class="ph ${exp.icon} text-2xl text-navy"></i>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 bg-navy/5 rounded-full text-navy/70">${exp.period}</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 text-navy leading-tight">${exp.title}</h3>
+                        <p class="text-sm font-semibold text-navy/60 mb-4">${exp.org}</p>
+                        <p class="text-sm text-navy/80 leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all duration-300">${exp.desc}</p>
+                        <div class="mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-navy/50">${exp.category}</div>
+                    </div>
+                `;
+            });
+        }
+        renderExperience();
+
+        /* --- 2. FILTERING LOGIC --- */
+        function filterExp(category) {
+            // Update Tab styles
+            document.querySelectorAll('.exp-tab').forEach(tab => {
+                tab.classList.remove('bg-navy', 'text-cream', 'shadow-lg');
+                tab.classList.add('text-navy/60');
+            });
+            event.target.classList.add('bg-navy', 'text-cream', 'shadow-lg');
+            event.target.classList.remove('text-navy/60');
+
+            // Show/Hide items
+            document.querySelectorAll('.exp-item').forEach(item => {
+                if(category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    setTimeout(() => item.style.opacity = '1', 50);
+                } else {
+                    item.style.opacity = '0';
+                    setTimeout(() => item.style.display = 'none', 300);
+                }
+            });
+        }
+
+        /* --- 3. THEME LOGIC --- */
+        const themes = [
+            { bg: "#fdf5e6", navBg: "rgba(253, 245, 230, 0.85)", cardBg: "rgba(255, 255, 255, 0.6)", blob: "#e6dcc0" }, // Cream
+            { bg: "#f8fafc", navBg: "rgba(248, 250, 252, 0.85)", cardBg: "rgba(255, 255, 255, 0.8)", blob: "#cbd5e1" }, // Soft Cloud
+            { bg: "#e2e8f0", navBg: "rgba(226, 232, 240, 0.85)", cardBg: "rgba(255, 255, 255, 0.5)", blob: "#94a3b8" }, // Mist Grey
+            { bg: "#ecfdf5", navBg: "rgba(236, 253, 245, 0.85)", cardBg: "rgba(255, 255, 255, 0.6)", blob: "#a7f3d0" }  // Pale Mint
+        ];
+        let themeIndex = 0;
+
+        function toggleTheme() {
+            themeIndex = (themeIndex + 1) % themes.length;
+            const root = document.documentElement;
+            root.style.setProperty('--theme-bg', themes[themeIndex].bg);
+            root.style.setProperty('--theme-nav-bg', themes[themeIndex].navBg);
+            root.style.setProperty('--theme-card-bg', themes[themeIndex].cardBg);
+            root.style.setProperty('--theme-blob', themes[themeIndex].blob);
+        }
+
+        /* --- 4. SCROLL & PARALLAX LOGIC --- */
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const navContainer = document.getElementById('nav-container');
+            const navbar = document.getElementById('navbar');
+            
+            // Navbar effect
+            if(scrollY > 50) {
+                navContainer.classList.remove('w-[95%]', 'md:w-[90%]', 'bg-white/40');
+                navContainer.classList.add('w-[95%]', 'md:w-[70%]', 'glass-nav');
+                navbar.classList.remove('py-6');
+                navbar.classList.add('py-4');
+            } else {
+                navContainer.classList.add('w-[95%]', 'md:w-[90%]', 'bg-white/40');
+                navContainer.classList.remove('w-[95%]', 'md:w-[70%]', 'glass-nav');
+                navbar.classList.add('py-6');
+                navbar.classList.remove('py-4');
+            }
+
+            // Background Parallax Blobs
+            document.getElementById('blob1').style.transform = `translate(${scrollY * 0.2}px, ${scrollY * 0.4}px) rotate(${scrollY * 0.05}deg)`;
+            document.getElementById('blob2').style.transform = `translate(-${scrollY * 0.3}px, -${scrollY * 0.5}px) rotate(-${scrollY * 0.05}deg)`;
+            document.getElementById('blob3').style.transform = `translate(${scrollY * 0.1}px, ${scrollY * 0.2}px)`;
+        });
+
+        /* --- 5. SLIDER LOGIC (Home Hero Section) --- */
+        let isInternshipMode = false;
+        function toggleSlider() {
+            isInternshipMode = !isInternshipMode;
+            
+            const knob = document.getElementById('slider-knob');
+            const icon = document.getElementById('slider-icon');
+            const labelExp = document.getElementById('label-experience');
+            const labelInt = document.getElementById('label-internship');
+            const btnDynamic = document.getElementById('btn-dynamic');
+            const btnText = document.getElementById('btn-dynamic-text');
+
+            if(isInternshipMode) {
+                // To Right (Magang)
+                knob.classList.remove('translate-x-0', 'bg-navy');
+                knob.classList.add('translate-x-10', 'bg-gradient-to-br', 'from-teal-500', 'to-teal-700');
+                icon.className = "ph ph-buildings text-white";
+                
+                labelExp.classList.replace('text-navy', 'text-navy/40');
+                labelInt.classList.replace('text-navy/40', 'text-navy');
+
+                btnDynamic.href = "#clinical";
+                btnDynamic.classList.remove('bg-navy', 'text-cream');
+                btnDynamic.classList.add('bg-gradient-to-r', 'from-teal-600', 'to-teal-800', 'text-white');
+                btnText.innerText = "Lihat Data Magang";
+            } else {
+                // To Left (Experience)
+                knob.classList.remove('translate-x-10', 'bg-gradient-to-br', 'from-teal-500', 'to-teal-700');
+                knob.classList.add('translate-x-0', 'bg-navy');
+                icon.className = "ph ph-users text-cream";
+
+                labelExp.classList.replace('text-navy/40', 'text-navy');
+                labelInt.classList.replace('text-navy', 'text-navy/40');
+
+                btnDynamic.href = "#experience";
+                btnDynamic.classList.remove('bg-gradient-to-r', 'from-teal-600', 'to-teal-800', 'text-white');
+                btnDynamic.classList.add('bg-navy', 'text-cream');
+                btnText.innerText = "Lihat Experience";
+            }
+        }
+
+        /* --- 6. DYNAMIC GREETING LOGIC --- */
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "SELAMAT DATANG";
+            let emoji = "👋";
+
+            // Aturan jam sapaan
+            if (hour >= 4 && hour < 11) {
+                greeting = "SELAMAT PAGI";
+                emoji = "🌅"; // Matahari terbit
+            } else if (hour >= 11 && hour < 15) {
+                greeting = "SELAMAT SIANG";
+                emoji = "☀️"; // Matahari terik
+            } else if (hour >= 15 && hour < 18) {
+                greeting = "SELAMAT SORE";
+                emoji = "🌇"; // Senja
+            } else {
+                greeting = "SELAMAT MALAM";
+                emoji = "🌙"; // Bulan
+            }
+
+            const greetingEl = document.getElementById('dynamic-greeting');
+            const emojiEl = document.getElementById('greeting-emoji');
+            
+            if(greetingEl) greetingEl.innerText = greeting;
+            if(emojiEl) emojiEl.innerText = emoji;
+        }
+        
+        // Inisialisasi Sapaan saat halaman dimuat
+        updateGreeting();
+    </script>
+</body>
+</html>
